@@ -32,16 +32,19 @@ export default class Collapse {
     this.isAnimating = true;
     this.trigger.classList.add("collapsed");
 
-    const height = this.target.scrollHeight;
-
     this.target.classList.remove("collapse");
+    this.target.classList.remove("show");
     this.target.classList.add("collapsing");
+    this.target.style.height = "0";
 
     this.target.offsetHeight;
 
+    const height = this.target.scrollHeight;
     this.target.style.height = height + "px";
 
-    setTimeout(() => {
+    const onTransitionEnd = (e) => {
+      if (e.propertyName !== "height") return;
+      this.target.removeEventListener("transitionend", onTransitionEnd);
       this.target.classList.remove("collapsing");
       this.target.classList.add("collapse");
       this.target.classList.add("show");
@@ -49,29 +52,37 @@ export default class Collapse {
       this.isOpen = true;
       this.isAnimating = false;
       this.trigger.classList.remove("collapsed");
-    }, 350);
+    };
+
+    this.target.addEventListener("transitionend", onTransitionEnd);
   }
 
   close() {
     this.isAnimating = true;
     this.trigger.classList.remove("collapsed");
 
+    this.target.classList.remove("collapse");
+    this.target.classList.remove("show");
+    this.target.classList.add("collapsing");
+
+    this.target.offsetHeight;
+
     const height = this.target.scrollHeight;
     this.target.style.height = height + "px";
 
     this.target.offsetHeight;
 
-    this.target.classList.remove("collapse");
-    this.target.classList.remove("show");
-    this.target.classList.add("collapsing");
-
     this.target.style.height = "0";
 
-    setTimeout(() => {
+    const onTransitionEnd = (e) => {
+      if (e.propertyName !== "height") return;
+      this.target.removeEventListener("transitionend", onTransitionEnd);
       this.target.classList.remove("collapsing");
       this.target.classList.add("collapse");
       this.isOpen = false;
       this.isAnimating = false;
-    }, 350);
+    };
+
+    this.target.addEventListener("transitionend", onTransitionEnd);
   }
 }

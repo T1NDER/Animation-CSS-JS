@@ -47,9 +47,9 @@ body {
 
 .collapsing {
   position: relative;
-  height: 0;
   overflow: hidden;
   transition: height 0.35s ease;
+  display: block;
 }
 
 .collapse-content:not(.show):not(.collapsing) {
